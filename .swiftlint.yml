@@ -8,11 +8,6 @@ vertical_whitespace: 2
 line_length: 120
 
 custom_rules:
-  comments_space: # from https://github.com/brandenr/swiftlintconfig
-    name: "Space After Comment"
-    regex: '(^ *//\w+)'
-    message: "There should be a space after //"
-    severity: error
   empty_line_after_super: # from https://github.com/brandenr/swiftlintconfig
     name: "Empty Line After Super"
     regex: '(^ *super\.[ a-zA-Z0-9=?.\(\)\{\}:,><!]*\n *(?!(?:\}|return))\S+)'
