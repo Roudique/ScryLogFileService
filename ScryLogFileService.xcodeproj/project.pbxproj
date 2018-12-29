@@ -655,7 +655,7 @@
             "OBJ_17",
             "OBJ_19"
          );
-         name = "ScryLogHTMLParser 0.1.0";
+         name = "ScryLogHTMLParser 0.1.1";
          path = ".build/checkouts/ScryLogHTMLParser.git-2370435224184037205/Sources";
          sourceTree = "SOURCE_ROOT";
       };
@@ -993,12 +993,12 @@
       "OBJ_43" = {
          isa = "PBXGroup";
          children = (
-            "Files::Files::Product",
             "CSV.swift::CSV::Product",
-            "Kanna::Kanna::Product",
+            "ScryLogFileService::ScryLogFileServiceTests::Product",
             "ScryLogHTMLParser::ScryLogHTMLParser::Product",
+            "Kanna::Kanna::Product",
             "ScryLogFileService::ScryLogFileService::Product",
-            "ScryLogFileService::ScryLogFileServiceTests::Product"
+            "Files::Files::Product"
          );
          name = "Products";
          path = "";
