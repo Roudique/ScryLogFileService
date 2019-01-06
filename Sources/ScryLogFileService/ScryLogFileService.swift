@@ -39,6 +39,38 @@ class FileService {
         }
     }
     
+    /// Returns all tables in specified folder.
+    /// E.g. if you pass `["home", "video"]` array as `folders` argument, this method will return all tables at path
+    /// `$ROOT_FOLDER/home/video`
+    ///
+    /// - Parameter folders: Path to the folder with tables.
+    /// - Returns: Nil if there was an error opening specified folder or an array of tables (may be empty as well).
+    func getTables(from folders: [String]) -> [Table]? {
+        guard var folder = try? Folder(path: self.startFolder.path) else { return nil }
+        
+        for folderName in folders {
+            guard let subfolder = try? folder.subfolder(named: folderName) else {
+                return nil
+            }
+            folder = subfolder
+        }
+        
+        var tables = [Table]()
+        folder.files.forEach { file in
+            guard file.extension == "csv" else { return }
+            guard let data = try? file.read() else { return }
+            guard let rows = FileService.readRowsFromData(data: data) else { return }
+            tables.append(Table(title: file.nameExcludingExtension, rows: rows))
+        }
+        
+        return tables
+    }
+    
+    func getFolderNames(at folders: [String]) -> [String]? {
+        return nil
+    }
+    
+    
     // MARK: - Private
     
     private static func readRowsFromData(data: Data) -> [Row]? {
