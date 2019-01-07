@@ -8,13 +8,21 @@ class FileService {
     
     // MARK: - Public
     
-    init?(startDirectoryPath: String) {
+    public init?(startDirectoryPath: String) {
         guard let folder = try? Folder(path: startDirectoryPath) else { return nil }
         self.startFolder = folder
     }
     
+    /// Saves table as csv to specified location.
+    ///
+    /// - Parameters:
+    ///   - table: Table to save.
+    ///   - fileName: Filename of the table. Extension will be `.csv`.
+    ///   - folders: Path of folders.
+    ///   - overwrite: If table at given path exists, it will not be overwritten by default.
+    /// - Returns: Success of the operation or false if something failed.
     @discardableResult
-    func saveCSV(table: Table, fileName: String, folders: [String]? = nil, overwrite: Bool = false) -> Bool {
+    public func saveCSV(table: Table, fileName: String, folders: [String]? = nil, overwrite: Bool = false) -> Bool {
         guard var folder = try? Folder(path: self.startFolder.path) else { return false }
         
         if let folders = folders {
@@ -25,7 +33,8 @@ class FileService {
         }
         
         let validatedFileName = fileName.replacingOccurrences(of: " ", with: "_") + ".csv"
-        guard let file = try? folder.createFileIfNeeded(withName: validatedFileName) else { return false }
+        if !overwrite, let _ = try? File(path: folder.file(named: validatedFileName).path) { return false }
+        guard let file = try? folder.createFile(named: validatedFileName) else { return false }
         
         print("\tFinal filepath for file with name `\(validatedFileName)` is \(file.path)")
         guard let tableData = table.toData() else { return false }
@@ -45,7 +54,7 @@ class FileService {
     ///
     /// - Parameter folders: Path to the folder with tables.
     /// - Returns: Nil if there was an error opening specified folder or an array of tables (may be empty as well).
-    func getTables(from folders: [String]) -> [Table]? {
+    public func getTables(from folders: [String]) -> [Table]? {
         guard var folder = try? Folder(path: self.startFolder.path) else { return nil }
         
         for folderName in folders {
@@ -64,7 +73,11 @@ class FileService {
         return tables
     }
     
-    func getFolderNames(at folders: [String] = [String]()) -> [String]? {
+    /// Returns all subfolders' names for given path.
+    ///
+    /// - Parameter folders: Path to the folder.
+    /// - Returns: Nil if there was an error opening specified folder or an array of folder names (may be empty).
+    public func getFolderNames(at folders: [String] = [String]()) -> [String]? {
         guard var folder = try? Folder(path: self.startFolder.path) else { return nil }
         
         for folderName in folders {
