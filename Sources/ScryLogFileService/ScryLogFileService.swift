@@ -49,9 +49,7 @@ class FileService {
         guard var folder = try? Folder(path: self.startFolder.path) else { return nil }
         
         for folderName in folders {
-            guard let subfolder = try? folder.subfolder(named: folderName) else {
-                return nil
-            }
+            guard let subfolder = try? folder.subfolder(named: folderName) else { return nil }
             folder = subfolder
         }
         
@@ -66,8 +64,18 @@ class FileService {
         return tables
     }
     
-    func getFolderNames(at folders: [String]) -> [String]? {
-        return nil
+    func getFolderNames(at folders: [String] = [String]()) -> [String]? {
+        guard var folder = try? Folder(path: self.startFolder.path) else { return nil }
+        
+        for folderName in folders {
+            guard let subfolder = try? Folder(path: folderName) else { return nil }
+            folder = subfolder
+        }
+        
+        var folderNames = [String]()
+        folder.subfolders.forEach { folderNames.append($0.name) }
+
+        return folderNames
     }
     
     
