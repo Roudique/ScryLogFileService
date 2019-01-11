@@ -33,7 +33,10 @@ class FileService {
         }
         
         let validatedFileName = fileName.replacingOccurrences(of: " ", with: "_") + ".csv"
-        if !overwrite, let _ = try? File(path: folder.file(named: validatedFileName).path) { return false }
+        
+        // If overwrite is not set to true but file exists already - simply quit.
+        if !overwrite, folder.containsFile(named: validatedFileName) { return false }
+        
         guard let file = try? folder.createFile(named: validatedFileName) else { return false }
         
         print("\tFinal filepath for file with name `\(validatedFileName)` is \(file.path)")
@@ -90,7 +93,6 @@ class FileService {
 
         return folderNames
     }
-    
     
     // MARK: - Private
     

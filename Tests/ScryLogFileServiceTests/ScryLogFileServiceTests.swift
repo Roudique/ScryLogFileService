@@ -47,6 +47,31 @@ final class ScryLogFileServiceTests: XCTestCase {
         XCTAssert(file != nil)
     }
     
+    func testTableSaveQuitsWithFileOverwriteIfFileExists() {
+        let table = makeTable()
+        let service = makeService()
+        
+        XCTAssert(service.saveCSV(table: table, fileName: table.title) == true)
+        XCTAssert(service.saveCSV(table: table, fileName: table.title, folders: nil, overwrite: false) == false)
+    }
+    
+    func testTableSaveOverwrites() {
+        let table1 = Table(title: "00", rows: [["00"]])
+        let table2 = Table(title: "01", rows: [["00", "01"], ["02", "03"]])
+        let fileTitle = "testTitle"
+        let service = makeService()
+
+        XCTAssert(service.saveCSV(table: table1, fileName: fileTitle) == true)
+        
+        let table1BytesLength = try! folder.file(named: fileTitle + ".csv").read().count
+        
+        XCTAssert(service.saveCSV(table: table2, fileName: fileTitle, folders: nil, overwrite: true) == true)
+        
+        let table2BytesLength = try! folder.file(named: fileTitle + ".csv").read().count
+        
+        XCTAssert(table1BytesLength != table2BytesLength)
+    }
+    
     func testTableSavingWithFolders() {
         let table = makeTable()
         let service = makeService()
@@ -92,10 +117,11 @@ final class ScryLogFileServiceTests: XCTestCase {
         XCTAssert(testFolders == folderNames)
     }
     
-
     static var allTests = [
         ("testExample", testInit),
         ("testSimpleTableSaving", testSimpleTableSaving),
+        ("testTableSaveQuitsWithFileOverwriteIfFileExists", testTableSaveQuitsWithFileOverwriteIfFileExists),
+        ("testTableSaveOverwrites", testTableSaveOverwrites),
         ("testTableSavingWithFolders", testTableSavingWithFolders),
         ("testGetTables", testGetTables),
         ("testGetFolderNames", testGetFolderNames),

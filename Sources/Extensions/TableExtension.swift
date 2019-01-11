@@ -12,14 +12,18 @@ import ScryLogHTMLParser
 extension Table {
     func toData() -> Data? {
         let stream = OutputStream(toMemory: ())
-        let csv = try! CSVWriter(stream: stream)
+        guard let csv = try? CSVWriter(stream: stream) else { return nil }
         
         // Write data to file row by row.
         for row in self.rows {
             csv.beginNewRow()
             
             for field in row {
-                try! csv.write(field: field, quoted: true)
+                do {
+                    try csv.write(field: field, quoted: true)
+                } catch {
+                    return nil
+                }
             }
         }
         

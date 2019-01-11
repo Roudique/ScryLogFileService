@@ -122,6 +122,13 @@
 			remoteGlobalIDString = "CSV.swift::CSV";
 			remoteInfo = CSV;
 		};
+		8453AA0821E82DF80025F72D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "ScryLogFileService::ScryLogFileServiceTests";
+			remoteInfo = ScryLogFileServiceTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -469,6 +476,7 @@
 			buildPhases = (
 				OBJ_107 /* Sources */,
 				OBJ_110 /* Frameworks */,
+				8453AA0921E8380B0025F72D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -594,6 +602,26 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8453AA0921E8380B0025F72D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_101 /* Sources */ = {
@@ -725,7 +753,7 @@
 		OBJ_130 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "ScryLogFileService::ScryLogFileServiceTests" /* ScryLogFileServiceTests */;
-			targetProxy = "ScryLogFileService::ScryLogFileServiceTests" /* ScryLogFileServiceTests */;
+			targetProxy = 8453AA0821E82DF80025F72D /* PBXContainerItemProxy */;
 		};
 		OBJ_143 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
