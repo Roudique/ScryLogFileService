@@ -81,7 +81,7 @@ class FileService {
         guard var folder = try? Folder(path: self.startFolder.path) else { return nil }
         
         for folderName in folders {
-            guard let subfolder = try? Folder(path: folderName) else { return nil }
+            guard let subfolder = try? folder.subfolder(named: folderName) else { return nil }
             folder = subfolder
         }
         
