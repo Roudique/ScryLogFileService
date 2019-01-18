@@ -1,0 +1,14 @@
+os:
+    - osx
+language: swift
+osx_image: xcode10.1
+sudo: required
+dist: trusty
+env:
+    - SWIFT_VERSION=4.2
+install:
+    - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+script:
+    - swift test
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
