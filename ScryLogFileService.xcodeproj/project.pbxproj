@@ -21,6 +21,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		8453AA0A21F232360025F72D /* TableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* TableExtension.swift */; };
+		8453AA0B21F2323D0025F72D /* ScryLogFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ScryLogFileService.swift */; };
+		8453AA0E21F233120025F72D /* ScryLogFileServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453AA0C21F233110025F72D /* ScryLogFileServiceTests.swift */; };
+		8453AA0F21F233120025F72D /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453AA0D21F233120025F72D /* XCTestManifests.swift */; };
+		8453AA1021F233BE0025F72D /* ScryLogFileService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ScryLogFileService::ScryLogFileService::Product" /* ScryLogFileService.framework */; };
 		OBJ_102 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Package.swift */; };
 		OBJ_108 /* TableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* TableExtension.swift */; };
 		OBJ_109 /* ScryLogFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ScryLogFileService.swift */; };
@@ -29,8 +34,6 @@
 		OBJ_113 /* Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Files::Files::Product" /* Files.framework */; };
 		OBJ_114 /* CSV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CSV.swift::CSV::Product" /* CSV.framework */; };
 		OBJ_125 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_136 /* ScryLogFileServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* ScryLogFileServiceTests.swift */; };
-		OBJ_137 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* XCTestManifests.swift */; };
 		OBJ_139 /* ScryLogHTMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ScryLogHTMLParser::ScryLogHTMLParser::Product" /* ScryLogHTMLParser.framework */; };
 		OBJ_140 /* Kanna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Kanna::Kanna::Product" /* Kanna.framework */; };
 		OBJ_141 /* Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Files::Files::Product" /* Files.framework */; };
@@ -132,12 +135,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8453AA0C21F233110025F72D /* ScryLogFileServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScryLogFileServiceTests.swift; path = Tests/ScryLogFileServiceTests.swift; sourceTree = "<group>"; };
+		8453AA0D21F233120025F72D /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XCTestManifests.swift; path = Tests/XCTestManifests.swift; sourceTree = "<group>"; };
 		"CSV.swift::CSV::Product" /* CSV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CSV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Files::Files::Product" /* Files.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Kanna::Kanna::Product" /* Kanna.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Kanna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* ScryLogFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScryLogFileService.swift; sourceTree = "<group>"; };
-		OBJ_14 /* ScryLogFileServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScryLogFileServiceTests.swift; sourceTree = "<group>"; };
-		OBJ_15 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		OBJ_18 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/roudique/Developer/ScryLog/ScryLogFileService/.build/checkouts/ScryLogHTMLParser.git-2370435224184037205/Package.swift"; sourceTree = "<group>"; };
 		OBJ_20 /* Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		OBJ_21 /* ScryLogHTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScryLogHTMLParser.swift; sourceTree = "<group>"; };
@@ -183,6 +186,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_139 /* ScryLogHTMLParser.framework in Frameworks */,
+				8453AA1021F233BE0025F72D /* ScryLogFileService.framework in Frameworks */,
 				OBJ_140 /* Kanna.framework in Frameworks */,
 				OBJ_141 /* Files.framework in Frameworks */,
 				OBJ_142 /* CSV.framework in Frameworks */,
@@ -232,19 +236,10 @@
 		OBJ_12 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_13 /* ScryLogFileServiceTests */,
+				8453AA0C21F233110025F72D /* ScryLogFileServiceTests.swift */,
+				8453AA0D21F233120025F72D /* XCTestManifests.swift */,
 			);
 			name = Tests;
-			sourceTree = SOURCE_ROOT;
-		};
-		OBJ_13 /* ScryLogFileServiceTests */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_14 /* ScryLogFileServiceTests.swift */,
-				OBJ_15 /* XCTestManifests.swift */,
-			);
-			name = ScryLogFileServiceTests;
-			path = Tests/ScryLogFileServiceTests;
 			sourceTree = SOURCE_ROOT;
 		};
 		OBJ_16 /* Dependencies */ = {
@@ -653,8 +648,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_136 /* ScryLogFileServiceTests.swift in Sources */,
-				OBJ_137 /* XCTestManifests.swift in Sources */,
+				8453AA0E21F233120025F72D /* ScryLogFileServiceTests.swift in Sources */,
+				8453AA0F21F233120025F72D /* XCTestManifests.swift in Sources */,
+				8453AA0A21F232360025F72D /* TableExtension.swift in Sources */,
+				8453AA0B21F2323D0025F72D /* ScryLogFileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

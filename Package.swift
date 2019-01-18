@@ -26,6 +26,7 @@ let package = Package(
             path: "Sources"),
         .testTarget(
             name: "ScryLogFileServiceTests",
-            dependencies: ["CSV", "Files", "ScryLogHTMLParser"]),
+            dependencies: ["CSV", "Files", "ScryLogFileService"],
+            path: "Tests"),
     ]
 )
