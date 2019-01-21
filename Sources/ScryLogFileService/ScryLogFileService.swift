@@ -3,7 +3,7 @@ import Foundation
 import ScryLogHTMLParser
 import CSV
 
-class FileService {
+open class FileService {
     private let startFolder: Folder
     
     // MARK: - Public
