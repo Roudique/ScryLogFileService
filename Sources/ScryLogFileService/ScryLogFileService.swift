@@ -37,17 +37,87 @@ public class FileService {
     }
 }
 
+// MARK: - Public
+
 public extension FileService {
-    func add(version: Version) {
+    @discardableResult
+    func add(version: Version) -> Bool {
+        var shouldErase = false
         
+        // Write each table file to disk.
+        for entity in version.entities {
+            for table in entity.tables {
+                let folders = [FolderNames.versions.string, String(version.number), entity.title]
+                let success = write(table: table, folders: folders, overwrite: true)
+                if !success {
+                    shouldErase = true
+                    break
+                }
+            }
+        }
+        
+        // Rollback logic.
+        if shouldErase {
+            guard let versionFolder = try? versionsFolder.subfolder(named: String(version.number)) else { return false }
+            try? versionFolder.delete()
+            return false
+        }
+        
+        self.versions.insert(version)
+        return true
     }
     
-    func add(entity: Entity, to version: Version) {
+    @discardableResult
+    func add(entity: Entity, to versionNumber: Int) -> Bool {
+        guard let version = version(with: versionNumber) else { return false }
         
+        // Write all the tables to appropriate folders and check if it's successful to rollback if needed.
+        var shouldErase = false
+        for table in entity.tables {
+            let success = write(table: table,
+                                folders: [FolderNames.versions.string, String(version.number), entity.title],
+                                overwrite: true)
+            if !success {
+                shouldErase = true
+                break
+            }
+        }
+        
+        // Rollback logic.
+        if shouldErase {
+            guard let versionFolder = try? versionsFolder.subfolder(named: String(versionNumber)) else { return false }
+            guard let entityFolder = try? versionFolder.subfolder(named: entity.title) else { return false }
+            try? entityFolder.delete()
+            return false
+        }
+        
+        version.entities.insert(entity)
+        
+        return true
     }
     
-    func add(table: Table, to entity: Entity) {
+    @discardableResult
+    func add(table: Table, to versionNumber: Int, to entityName: String) -> Bool {
+        guard let version = version(with: versionNumber) else { return false }
         
+        var entityToModify: Entity?
+        
+        for entity in version.entities where entity.title == entityName {
+            entityToModify = entity
+            break
+        }
+        
+        guard let entity = entityToModify else { return false }
+        
+        let success = write(table: table,
+                            folders: [FolderNames.versions.string, String(versionNumber), entityName],
+                            overwrite: true)
+        
+        guard success else { return false }
+        
+        entity.tables.append(table)
+        
+        return true
     }
     
     func remove(version: Version) {
@@ -112,9 +182,53 @@ private extension FileService {
     }
 }
 
+// MARK: - Helpers
+
+private extension FileService {
+    func version(with number: Int) -> Version? {
+        var versionToReturn: Version?
+        
+        for version in versions where version.number == number {
+            versionToReturn = version
+            break
+        }
+        
+        return versionToReturn
+    }
+}
+
 // MARK: - File handling
 
 private extension FileService {
+    @discardableResult
+    func write(table: Table, folders: [String]? = nil, overwrite: Bool = false) -> Bool {
+        guard var folder = try? Folder(path: self.startFolder.path) else { return false }
+        
+        if let folders = folders {
+            for folderName in folders {
+                guard let subfolder = try? folder.createSubfolderIfNeeded(withName: folderName) else { return false}
+                folder = subfolder
+            }
+        }
+        
+        let filename = table.title.replacingOccurrences(of: " ", with: "_") + ".csv"
+        
+        // If overwrite is not set to true but file exists already - simply quit.
+        if !overwrite, folder.containsFile(named: filename) { return false }
+        
+        guard let file = try? folder.createFile(named: filename) else { return false }
+        
+        guard let tableData = table.toData() else { return false }
+        
+        do {
+            try file.write(data: tableData)
+            return true
+        } catch {
+            print("Failed to write table csv to \(file.path). Error: \(error)")
+            return false
+        }
+    }
+
     private static func readRowsFromData(data: Data) -> [Row]? {
         let stream = InputStream.init(data: data)
         return self.readRowsFromStream(inputStream: stream)

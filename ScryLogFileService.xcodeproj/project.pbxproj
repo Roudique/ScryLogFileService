@@ -372,9 +372,9 @@
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				OBJ_10 /* ScryLogFileService */,
 				84AA92C421FE69CA00DF9F89 /* Model */,
 				OBJ_8 /* Extensions */,
-				OBJ_10 /* ScryLogFileService */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;

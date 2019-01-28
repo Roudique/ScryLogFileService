@@ -9,8 +9,8 @@ import Foundation
 import ScryLogHTMLParser
 
 public class Entity {
-    let title: String
-    let tables: [Table]
+    public let title: String
+    public var tables: [Table]
     
     init(title: String, tables: [Table]) {
         self.title = title
