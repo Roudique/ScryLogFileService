@@ -26,6 +26,10 @@
 		8453AA0E21F233120025F72D /* ScryLogFileServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453AA0C21F233110025F72D /* ScryLogFileServiceTests.swift */; };
 		8453AA0F21F233120025F72D /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453AA0D21F233120025F72D /* XCTestManifests.swift */; };
 		8453AA1021F233BE0025F72D /* ScryLogFileService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ScryLogFileService::ScryLogFileService::Product" /* ScryLogFileService.framework */; };
+		84AA92C621FE69E100DF9F89 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AA92C521FE69E100DF9F89 /* Entity.swift */; };
+		84AA92C721FE69E100DF9F89 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AA92C521FE69E100DF9F89 /* Entity.swift */; };
+		84AA92C921FE6A0200DF9F89 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AA92C821FE6A0200DF9F89 /* Version.swift */; };
+		84AA92CA21FE6A0200DF9F89 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AA92C821FE6A0200DF9F89 /* Version.swift */; };
 		OBJ_102 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* Package.swift */; };
 		OBJ_108 /* TableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* TableExtension.swift */; };
 		OBJ_109 /* ScryLogFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ScryLogFileService.swift */; };
@@ -137,6 +141,8 @@
 /* Begin PBXFileReference section */
 		8453AA0C21F233110025F72D /* ScryLogFileServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScryLogFileServiceTests.swift; path = Tests/ScryLogFileServiceTests.swift; sourceTree = "<group>"; };
 		8453AA0D21F233120025F72D /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = XCTestManifests.swift; path = Tests/XCTestManifests.swift; sourceTree = "<group>"; };
+		84AA92C521FE69E100DF9F89 /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		84AA92C821FE6A0200DF9F89 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		"CSV.swift::CSV::Product" /* CSV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CSV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Files::Files::Product" /* Files.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Kanna::Kanna::Product" /* Kanna.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Kanna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -225,6 +231,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84AA92C421FE69CA00DF9F89 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				84AA92C521FE69E100DF9F89 /* Entity.swift */,
+				84AA92C821FE6A0200DF9F89 /* Version.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* ScryLogFileService */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,7 +358,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -352,12 +367,12 @@
 				OBJ_16 /* Dependencies */,
 				OBJ_45 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				84AA92C421FE69CA00DF9F89 /* Model */,
 				OBJ_8 /* Extensions */,
 				OBJ_10 /* ScryLogFileService */,
 			);
@@ -577,7 +592,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_45 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -633,6 +648,8 @@
 			files = (
 				OBJ_108 /* TableExtension.swift in Sources */,
 				OBJ_109 /* ScryLogFileService.swift in Sources */,
+				84AA92C921FE6A0200DF9F89 /* Version.swift in Sources */,
+				84AA92C621FE69E100DF9F89 /* Entity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,8 +666,10 @@
 			buildActionMask = 0;
 			files = (
 				8453AA0E21F233120025F72D /* ScryLogFileServiceTests.swift in Sources */,
+				84AA92C721FE69E100DF9F89 /* Entity.swift in Sources */,
 				8453AA0F21F233120025F72D /* XCTestManifests.swift in Sources */,
 				8453AA0A21F232360025F72D /* TableExtension.swift in Sources */,
+				84AA92CA21FE6A0200DF9F89 /* Version.swift in Sources */,
 				8453AA0B21F2323D0025F72D /* ScryLogFileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

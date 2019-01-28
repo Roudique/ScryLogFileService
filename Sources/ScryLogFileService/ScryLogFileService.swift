@@ -3,16 +3,152 @@ import Foundation
 import ScryLogHTMLParser
 import CSV
 
-open class FileService {
+private enum FolderNames: String {
+    case versions
+    
+    var string: String { return rawValue }
+}
+
+public class FileService {
     private let startFolder: Folder
+    private let versionsFolder: Folder
+    
+    public var versions: Set<Version> = {
+        return Set<Version>()
+    }()
     
     // MARK: - Public
     
     public init?(startDirectoryPath: String) {
         guard let folder = try? Folder(path: startDirectoryPath) else { return nil }
         self.startFolder = folder
+        
+        guard let versionsFolder = try? folder.createSubfolderIfNeeded(withName: FolderNames.versions.string) else {
+            return nil
+        }
+        
+        self.versionsFolder = versionsFolder
+        
+        let versionsFolders =  self.versionsFolder.subfolders
+        if versionsFolders.count == 0 { return }
+        
+        guard let versions = versions(from: Array(versionsFolders)) else { return nil }
+        self.versions = versions
+    }
+}
+
+public extension FileService {
+    func add(version: Version) {
+        
     }
     
+    func add(entity: Entity, to version: Version) {
+        
+    }
+    
+    func add(table: Table, to entity: Entity) {
+        
+    }
+    
+    func remove(version: Version) {
+        
+    }
+
+    func remove(entity: Entity, from version: Version) {
+        
+    }
+    
+    func remove(table: Table, from entity: Entity) {
+        
+    }
+}
+
+// MARK: - Initialization helpers
+
+private extension FileService {
+    func versions(from folders: [Folder]) -> Set<Version>? {
+        var versions = Set<Version>()
+        
+        guard folders.count > 0 else { return versions }
+        
+        for folder in folders {
+            let folderName          = folder.name
+            guard let versionNumber = Int(folderName) else { continue }
+            
+            let entitiesFolders     = folder.subfolders
+            guard let entities      = entities(from: Array(entitiesFolders)) else { continue }
+            
+            let version             = Version(number: versionNumber, entities: entities)
+            versions.insert(version)
+        }
+        
+        return versions
+    }
+    
+    func entities(from folders: [Folder]) -> [Entity]? {
+        var entities = [Entity]()
+        
+        for folder in folders {
+            let entityName = folder.name
+            guard let tables = tables(from: folder) else { continue }
+            
+            let entity = Entity(title: entityName, tables: tables)
+            entities.append(entity)
+        }
+        
+        return entities
+    }
+    
+    func tables(from folder: Folder) -> [Table]? {
+        var tables = [Table]()
+        folder.files.forEach { file in
+            guard file.extension == "csv" else { return }
+            guard let data = try? file.read() else { return }
+            guard let rows = FileService.readRowsFromData(data: data) else { return }
+            tables.append(Table(title: file.nameExcludingExtension, rows: rows))
+        }
+        
+        return tables
+    }
+}
+
+// MARK: - File handling
+
+private extension FileService {
+    private static func readRowsFromData(data: Data) -> [Row]? {
+        let stream = InputStream.init(data: data)
+        return self.readRowsFromStream(inputStream: stream)
+    }
+    
+    private static func readRowsFromFile(fileURL: URL) -> [Row]? {
+        guard let stream = InputStream.init(url: fileURL) else { return nil }
+        return self.readRowsFromStream(inputStream: stream)
+    }
+    
+    private static func readRowsFromStream(inputStream: InputStream) -> [Row]? {
+        var rows = [Row]()
+        
+        do {
+            let reader = try CSVReader.init(stream: inputStream)
+            while let line = reader.next() {
+                var row = [String]()
+                
+                for field in line {
+                    row.append(field)
+                }
+                rows.append(row)
+            }
+            
+        } catch {
+            return nil
+        }
+        
+        return rows
+    }
+
+}
+
+    /*
     /// Saves table as csv to specified location.
     ///
     /// - Parameters:
@@ -22,7 +158,7 @@ open class FileService {
     ///   - overwrite: If table at given path exists, it will not be overwritten by default.
     /// - Returns: Success of the operation or false if something failed.
     @discardableResult
-    public func saveCSV(table: Table, fileName: String, folders: [String]? = nil, overwrite: Bool = false) -> Bool {
+    public func save(table: Table, fileName: String, folders: [String]? = nil, overwrite: Bool = false) -> Bool {
         guard var folder = try? Folder(path: self.startFolder.path) else { return false }
         
         if let folders = folders {
@@ -94,37 +230,6 @@ open class FileService {
         return folderNames
     }
     
-    // MARK: - Private
-    
-    private static func readRowsFromData(data: Data) -> [Row]? {
-        let stream = InputStream.init(data: data)
-        return self.readRowsFromStream(inputStream: stream)
-    }
-    
-    private static func readRowsFromFile(fileURL: URL) -> [Row]? {
-        guard let stream = InputStream.init(url: fileURL) else { return nil }
-        return self.readRowsFromStream(inputStream: stream)
-    }
-    
-    private static func readRowsFromStream(inputStream: InputStream) -> [Row]? {
-        var rows = [Row]()
-        
-        do {
-            let reader = try CSVReader.init(stream: inputStream)
-            while let line = reader.next() {
-                var row = [String]()
-                
-                for field in line {
-                    row.append(field)
-                }
-                rows.append(row)
-            }
-            
-        } catch {
-            return nil
-        }
-        
-        return rows
-    }
 
 }
+*/
