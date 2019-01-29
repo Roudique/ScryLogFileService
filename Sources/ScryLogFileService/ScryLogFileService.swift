@@ -13,7 +13,8 @@ public class FileService {
     private let startFolder: Folder
     private let versionsFolder: Folder
     
-    public var versions: Set<Version> = {
+    /// Versions that are currently presented by service.
+    private(set) public var versions: Set<Version> = {
         return Set<Version>()
     }()
     
@@ -40,6 +41,11 @@ public class FileService {
 // MARK: - Public
 
 public extension FileService {
+    /// Add version to the service. If version with same number exists, it will be overwritten.
+    /// Immediately persists all data inside the version on the disk.
+    ///
+    /// - Parameter version: Version to insert.
+    /// - Returns: Success of the operation.
     @discardableResult
     func add(version: Version) -> Bool {
         var shouldErase = false
@@ -67,6 +73,13 @@ public extension FileService {
         return true
     }
     
+    /// Add entity to specified version. If entity with same name exists, it will be overwritten.
+    /// Immediately persists all data.
+    ///
+    /// - Parameters:
+    ///   - entity: Entity to insert.
+    ///   - versionNumber: Inserts entity to version with specified number or fails if such version doesn't exists.
+    /// - Returns: Success of the operation.
     @discardableResult
     func add(entity: Entity, toVersionNumber versionNumber: Int) -> Bool {
         guard let version = version(with: versionNumber) else { return false }
@@ -96,6 +109,14 @@ public extension FileService {
         return true
     }
     
+    /// Add table to specified entity of version with specified number.
+    /// Immediately persists the table. If table with same name exists it will be overwritten.
+    ///
+    /// - Parameters:
+    ///   - table: Table to insert.
+    ///   - versionNumber: Version number to which table will be inserted.
+    ///   - entityTitle: Title of entity to which table will be inserted. If it doesn't exists then operation fails.
+    /// - Returns: Success of the operation.
     @discardableResult
     func add(table: Table, toVersionNumber versionNumber: Int, toEntityTitle entityTitle: String) -> Bool {
         guard let version = version(with: versionNumber) else { return false }
@@ -120,6 +141,10 @@ public extension FileService {
         return true
     }
     
+    /// Removes specified version from cached versions and erase it from disk.
+    ///
+    /// - Parameter version: Version to remove and erase.
+    /// - Returns: Success of the operation.
     @discardableResult
     func remove(version: Version) -> Bool {
         if !versions.contains(version) { return false }
@@ -136,6 +161,12 @@ public extension FileService {
         return true
     }
 
+    /// Removes specified entity from cached entities and from the disk.
+    ///
+    /// - Parameters:
+    ///   - entity: Entity to remove and erase.
+    ///   - versionNumber: Version number of version that holds the entity.
+    /// - Returns: Success of the operation.
     @discardableResult
     func remove(entity: Entity, fromVersionNumber versionNumber: Int) -> Bool {
         guard let correctVersion = version(with: versionNumber) else { return false }
@@ -155,6 +186,13 @@ public extension FileService {
         return true
     }
     
+    /// Removes specified table from cached tables and from the disk.
+    ///
+    /// - Parameters:
+    ///   - table: Table to remove and erase.
+    ///   - versionNumber: Version number that holds the entity which holds the table.
+    ///   - entityTitle: Title of the entity which holds the table.
+    /// - Returns: Success of the operation.
     @discardableResult
     func remove(table: Table, fromVersionNumber versionNumber: Int, fromEntityWithTitle entityTitle: String) -> Bool {
         guard let correctVersion = version(with: versionNumber) else { return false }

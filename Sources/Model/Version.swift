@@ -10,9 +10,9 @@ import ScryLogHTMLParser
 
 public class Version {
     public let number: Int
-    public var entities: Set<Entity>
+    internal(set) public var entities: Set<Entity>
     
-    init(number: Int, entities: [Entity]) {
+    public init(number: Int, entities: [Entity]) {
         self.number = number
         self.entities = Set(entities)
     }
