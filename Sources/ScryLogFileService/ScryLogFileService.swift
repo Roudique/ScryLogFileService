@@ -68,7 +68,7 @@ public extension FileService {
     }
     
     @discardableResult
-    func add(entity: Entity, to versionNumber: Int) -> Bool {
+    func add(entity: Entity, toVersionNumber versionNumber: Int) -> Bool {
         guard let version = version(with: versionNumber) else { return false }
         
         // Write all the tables to appropriate folders and check if it's successful to rollback if needed.
@@ -97,12 +97,12 @@ public extension FileService {
     }
     
     @discardableResult
-    func add(table: Table, to versionNumber: Int, to entityName: String) -> Bool {
+    func add(table: Table, toVersionNumber versionNumber: Int, toEntityTitle entityTitle: String) -> Bool {
         guard let version = version(with: versionNumber) else { return false }
         
         var entityToModify: Entity?
         
-        for entity in version.entities where entity.title == entityName {
+        for entity in version.entities where entity.title == entityTitle {
             entityToModify = entity
             break
         }
@@ -110,7 +110,7 @@ public extension FileService {
         guard let entity = entityToModify else { return false }
         
         let success = write(table: table,
-                            folders: [FolderNames.versions.string, String(versionNumber), entityName],
+                            folders: [FolderNames.versions.string, String(versionNumber), entityTitle],
                             overwrite: true)
         
         guard success else { return false }
@@ -120,6 +120,7 @@ public extension FileService {
         return true
     }
     
+    @discardableResult
     func remove(version: Version) -> Bool {
         if !versions.contains(version) { return false }
         
@@ -135,11 +136,13 @@ public extension FileService {
         return true
     }
 
-    func remove(entity: Entity, from versionNumber: Int) -> Bool {
+    @discardableResult
+    func remove(entity: Entity, fromVersionNumber versionNumber: Int) -> Bool {
         guard let correctVersion = version(with: versionNumber) else { return false }
         guard correctVersion.entities.contains(entity) else { return false }
         
-        guard let entityFolder = try? versionsFolder.subfolder(named: entity.title) else { return false }
+        guard let versionFolder = try? versionsFolder.subfolder(named: String(versionNumber)) else { return false }
+        guard let entityFolder = try? versionFolder.subfolder(named: entity.title) else { return false }
         
         do {
             try entityFolder.delete()
@@ -152,9 +155,10 @@ public extension FileService {
         return true
     }
     
-    func remove(table: Table, from versionNumber: Int, from entityName: String) -> Bool {
+    @discardableResult
+    func remove(table: Table, fromVersionNumber versionNumber: Int, fromEntityWithTitle entityTitle: String) -> Bool {
         guard let correctVersion = version(with: versionNumber) else { return false }
-        let entity = correctVersion.entities.first { $0.title == entityName }
+        let entity = correctVersion.entities.first { $0.title == entityTitle }
         guard let correctEntity = entity else { return false }
         
         var storedTable: Table?
@@ -168,7 +172,7 @@ public extension FileService {
         guard let correctTableIndex = tableIndex else { return false }
         
         guard let versionFolder = try? versionsFolder.subfolder(named: String(versionNumber)) else { return false }
-        guard let entityFolder = try? versionFolder.subfolder(named: entityName) else { return false }
+        guard let entityFolder = try? versionFolder.subfolder(named: entityTitle) else { return false }
         guard let tableFile = try? entityFolder.file(named: table.title + ".csv") else { return false }
         
         do {

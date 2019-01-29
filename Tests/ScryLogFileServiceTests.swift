@@ -5,8 +5,8 @@ import ScryLogHTMLParser
 
 final class ScryLogFileServiceTests: XCTestCase {
     private var folder: Folder!
-    private var versionsFolder: Folder? {
-        return try? folder.subfolder(named: "versions")
+    private var versionsFolder: Folder! {
+        return try! folder.subfolder(named: "versions")
     }
     private var service: FileService!
     
@@ -76,7 +76,7 @@ final class ScryLogFileServiceTests: XCTestCase {
         let entityName = "testEntity"
         let entity = makeEntity(title: entityName)
         
-        service.add(entity: entity, to: 0)
+        service.add(entity: entity, toVersionNumber: 0)
         
         XCTAssert(service.versions.count == 0)
         let versionsFolder = self.versionsFolder!
@@ -88,13 +88,53 @@ final class ScryLogFileServiceTests: XCTestCase {
         service.add(version: version)
         XCTAssert(versionsFolder.containsSubfolder(named: String(versionNumber)))
         
-        service.add(entity: entity, to: versionNumber)
+        service.add(entity: entity, toVersionNumber: versionNumber)
         let version0Folder = try! versionsFolder.subfolder(named: String(versionNumber))
         
         let entityFolder = try! version0Folder.subfolder(named: entityName)
         for table in entity.tables {
             XCTAssert(entityFolder.containsFile(named: table.title + ".csv"))
         }
+    }
+    
+    func testRemoveVersion() {
+        let version = makeVersion()
+        XCTAssert(service.add(version: version))
+        XCTAssert(versionsFolder.containsSubfolder(named: String(version.number)))
+        
+        service.remove(version: version)
+        
+        XCTAssert(!versionsFolder.containsSubfolder(named: String(version.number)))
+    }
+    
+    func testRemoveEntity() {
+        let version = makeVersion()
+        let entity = version.entities.first!
+        
+        service.add(version: version)
+        
+        let versionFolder = try! versionsFolder.subfolder(named: String(version.number))
+        XCTAssert(versionFolder.containsSubfolder(named: entity.title))
+        
+        service.remove(entity: entity, fromVersionNumber: version.number)
+        
+        XCTAssert(!versionFolder.containsSubfolder(named: entity.title))
+    }
+    
+    func testRemoveTable() {
+        let version = makeVersion()
+        let entity = version.entities.first!
+        let table = entity.tables.first!
+        
+        service.add(version: version)
+        
+        let versionFolder = try! versionsFolder.subfolder(named: String(version.number))
+        let entityFolder = try! versionFolder.subfolder(named: entity.title)
+        XCTAssert(entityFolder.containsFile(named: table.title + ".csv"))
+        
+        service.remove(table: table, fromVersionNumber: version.number, fromEntityWithTitle: entity.title)
+        
+        XCTAssert(!entityFolder.containsFile(named: table.title + ".csv"))
     }
 
     static var allTests = [
