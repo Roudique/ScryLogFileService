@@ -5,6 +5,9 @@ import ScryLogHTMLParser
 
 final class ScryLogFileServiceTests: XCTestCase {
     private var folder: Folder!
+    private var versionsFolder: Folder? {
+        return try? folder.subfolder(named: "versions")
+    }
     private var service: FileService!
     
     // MARK: - XCTestCase
@@ -54,7 +57,7 @@ final class ScryLogFileServiceTests: XCTestCase {
         
         service.add(version: version)
         
-        let versionsFolder = try! folder.subfolder(named: "versions")
+        let versionsFolder = self.versionsFolder!
         let version0Folder = try! versionsFolder.subfolder(named: String(versionNumber))
         
         for entity in version.entities {
@@ -65,9 +68,38 @@ final class ScryLogFileServiceTests: XCTestCase {
                 XCTAssert(containsFile)
             }
         }
+        
+        XCTAssert(service.versions.contains(version))
+    }
+    
+    func testAddEntity() {
+        let entityName = "testEntity"
+        let entity = makeEntity(title: entityName)
+        
+        service.add(entity: entity, to: 0)
+        
+        XCTAssert(service.versions.count == 0)
+        let versionsFolder = self.versionsFolder!
+        XCTAssert(versionsFolder.subfolders.count == 0)
+        
+        let versionNumber = 0
+        let version = makeVersion(number: versionNumber)
+        
+        service.add(version: version)
+        XCTAssert(versionsFolder.containsSubfolder(named: String(versionNumber)))
+        
+        service.add(entity: entity, to: versionNumber)
+        let version0Folder = try! versionsFolder.subfolder(named: String(versionNumber))
+        
+        let entityFolder = try! version0Folder.subfolder(named: entityName)
+        for table in entity.tables {
+            XCTAssert(entityFolder.containsFile(named: table.title + ".csv"))
+        }
     }
 
     static var allTests = [
         ("testExample", testInit),
+        ("testAddVersion", testAddVersion),
+        ("testAddEntity", testAddEntity),
     ]
 }
