@@ -120,16 +120,66 @@ public extension FileService {
         return true
     }
     
-    func remove(version: Version) {
+    func remove(version: Version) -> Bool {
+        if !versions.contains(version) { return false }
         
+        guard let versionFolder = try? versionsFolder.subfolder(named: String(version.number)) else { return false }
+        do {
+            try versionFolder.delete()
+        } catch {
+            return false
+        }
+        
+        versions.remove(version)
+        
+        return true
     }
 
-    func remove(entity: Entity, from version: Version) {
+    func remove(entity: Entity, from versionNumber: Int) -> Bool {
+        guard let correctVersion = version(with: versionNumber) else { return false }
+        guard correctVersion.entities.contains(entity) else { return false }
         
+        guard let entityFolder = try? versionsFolder.subfolder(named: entity.title) else { return false }
+        
+        do {
+            try entityFolder.delete()
+        } catch {
+            return false
+        }
+        
+        correctVersion.entities.remove(entity)
+        
+        return true
     }
     
-    func remove(table: Table, from entity: Entity) {
+    func remove(table: Table, from versionNumber: Int, from entityName: String) -> Bool {
+        guard let correctVersion = version(with: versionNumber) else { return false }
+        let entity = correctVersion.entities.first { $0.title == entityName }
+        guard let correctEntity = entity else { return false }
         
+        var storedTable: Table?
+        
+        for tab in correctEntity.tables where tab.title == table.title {
+            storedTable = tab
+        }
+        
+        guard storedTable === table else { return false }
+        let tableIndex = correctEntity.tables.firstIndex { $0 === table }
+        guard let correctTableIndex = tableIndex else { return false }
+        
+        guard let versionFolder = try? versionsFolder.subfolder(named: String(versionNumber)) else { return false }
+        guard let entityFolder = try? versionFolder.subfolder(named: entityName) else { return false }
+        guard let tableFile = try? entityFolder.file(named: table.title + ".csv") else { return false }
+        
+        do {
+            try tableFile.delete()
+        } catch {
+            return false
+        }
+        
+        correctEntity.tables.remove(at: correctTableIndex)
+        
+        return true
     }
 }
 
@@ -186,14 +236,11 @@ private extension FileService {
 
 private extension FileService {
     func version(with number: Int) -> Version? {
-        var versionToReturn: Version?
-        
         for version in versions where version.number == number {
-            versionToReturn = version
-            break
+            return version
         }
         
-        return versionToReturn
+        return nil
     }
 }
 
