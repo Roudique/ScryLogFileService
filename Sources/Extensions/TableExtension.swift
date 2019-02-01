@@ -36,3 +36,13 @@ extension Table {
         return data
     }
 }
+
+extension Table: Hashable {
+    public var hashValue: Int {
+        return title.hashValue
+    }
+    
+    public static func == (lhs: Table, rhs: Table) -> Bool {
+        return lhs.title == rhs.title
+    }
+}

@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		8453AA0A21F232360025F72D /* TableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* TableExtension.swift */; };
+		84390F9B2203ED37000CC64E /* TableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* TableExtension.swift */; };
 		8453AA0B21F2323D0025F72D /* ScryLogFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ScryLogFileService.swift */; };
 		8453AA0E21F233120025F72D /* ScryLogFileServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453AA0C21F233110025F72D /* ScryLogFileServiceTests.swift */; };
 		8453AA0F21F233120025F72D /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453AA0D21F233120025F72D /* XCTestManifests.swift */; };
@@ -668,8 +668,8 @@
 				8453AA0E21F233120025F72D /* ScryLogFileServiceTests.swift in Sources */,
 				84AA92C721FE69E100DF9F89 /* Entity.swift in Sources */,
 				8453AA0F21F233120025F72D /* XCTestManifests.swift in Sources */,
-				8453AA0A21F232360025F72D /* TableExtension.swift in Sources */,
 				84AA92CA21FE6A0200DF9F89 /* Version.swift in Sources */,
+				84390F9B2203ED37000CC64E /* TableExtension.swift in Sources */,
 				8453AA0B21F2323D0025F72D /* ScryLogFileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

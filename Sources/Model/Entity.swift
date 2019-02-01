@@ -10,11 +10,11 @@ import ScryLogHTMLParser
 
 public class Entity {
     public let title: String
-    internal(set) public var tables: [Table]
+    internal(set) public var tables: Set<Table>
     
     public init(title: String, tables: [Table]) {
         self.title = title
-        self.tables = tables
+        self.tables = Set(tables)
     }
 }
 

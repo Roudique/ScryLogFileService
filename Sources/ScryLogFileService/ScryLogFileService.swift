@@ -136,7 +136,7 @@ public extension FileService {
         
         guard success else { return false }
         
-        entity.tables.append(table)
+        entity.tables.insert(table)
         
         return true
     }
