@@ -300,7 +300,7 @@ private extension FileService {
             }
         }
         
-        let filename = table.title.replacingOccurrences(of: " ", with: "_") + ".csv"
+        let filename = table.title + ".csv"
         
         // If overwrite is not set to true but file exists already - simply quit.
         if !overwrite, folder.containsFile(named: filename) { return false }
